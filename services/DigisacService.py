@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -30,8 +31,10 @@ class DigisacService:
                 last_shutdown = conexao["data"].get("lastShutdownAt")
 
                 last_sync = datetime.fromisoformat(last_sync.replace("Z", "+00:00"))
+                last_sync = last_sync.astimezone(ZoneInfo("America/Sao_Paulo"))
                 if last_shutdown is not None:
                     last_shutdown = datetime.fromisoformat(last_shutdown.replace("Z", "+00:00"))
+                    last_shutdown = last_shutdown.astimezone(ZoneInfo("America/Sao_Paulo"))
 
                 conexoes.append(Conexao(nome, ide, status, last_sync, last_shutdown))
 
